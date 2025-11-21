@@ -1,4 +1,4 @@
-Foto2Video – Multi-Stage AI Video Generator (Cog + Replicate)
+**Foto2Video – Multi-Stage AI Video Generator (Cog + Replicate)**
 
 Foto2Video is a multi-stage AI pipeline that:
 	1.	Generates a character image from text
