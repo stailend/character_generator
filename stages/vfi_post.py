@@ -1,24 +1,36 @@
-def upscale_fps(client, video_url: str):
-    out = client.run(
-        "topazlabs/video-upscale",
-        input={
-            "video": video_url,
-            "preset": "standard",
-            "resolution": "1080p"
-        }
-    )
-    return out
-
 import subprocess
 
-def film_effect(video_url: str):
-    output_path = "/outputs/final.mp4"
-    subprocess.run([
-        "ffmpeg", "-y",
-        "-i", video_url,
-        "-vf", "noise=alls=20:allf=t+u,unsharp=5:5:0.8",
-        "-c:v", "libx264", "-preset", "fast",
+
+def upscale_fps(input_video: str, output_path: str) -> str:
+    cmd = [
+        "ffmpeg",
+        "-y",
+        "-i", input_video,
+        "-vf", "minterpolate=fps=60",
+        "-c:v", "libx264",
         "-pix_fmt", "yuv420p",
-        output_path
-    ])
+        output_path,
+    ]
+    subprocess.run(cmd, check=True)
+    return output_path
+
+
+def film_effect(input_video: str, output_path: str) -> str:
+    vf = (
+        "format=yuv420p,"
+        "noise=alls=8:allf=t+u,"
+        "eq=contrast=1.1:brightness=0.02,"
+        "unsharp=5:5:0.8:5:5:0.0"
+    )
+
+    cmd = [
+        "ffmpeg",
+        "-y",
+        "-i", input_video,
+        "-vf", vf,
+        "-c:v", "libx264",
+        "-pix_fmt", "yuv420p",
+        output_path,
+    ]
+    subprocess.run(cmd, check=True)
     return output_path
