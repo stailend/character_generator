@@ -7,12 +7,12 @@ It combines tiny-sd (text-to-image) with InsightFace FaceSwap in a simple, unifi
 
 
 ### 🚀 Features
-	•	Generate a character image using a text prompt
-	•	Replace the face in the generated image with:
-	•	a face URL, or
-	•	a local face image
-	•	Single-file pipeline (predict.py)
-	•	Runs on CPU, CUDA, or MPS
+ - Generate a character image using a text prompt
+ - Replace the face in the generated image with:
+ - a face URL, or
+ - a local face image
+ - Single-file pipeline (predict.py)
+ - Runs on CPU, CUDA, or MPS
 
 
 
@@ -51,15 +51,3 @@ or
 python predict.py "dark forest sorcerer with glowing symbols" \
 "input_face.png"
 ```
-
-
-
-### 📁 Project Structure
-
-.
-├── predict.py               # main pipeline
-├── sdxl.py                  # text → image generation
-├── faceswap.py              # face replacement
-├── models/                  # InsightFace models (auto-downloaded)
-├── generated_image.png		 # generated outputs
-└── final_image.png   		 # faceswaped  image
