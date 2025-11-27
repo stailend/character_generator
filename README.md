@@ -8,7 +8,7 @@ It combines tiny-sd (text-to-image) with InsightFace FaceSwap in a simple, unifi
 
 <p align="center">
   <img src="./images/ex1.png" alt="Generated Character" width="30%" />
-  <img src="./images/ex2.png" alt="Input Face" width="30%" />
+  <img src="./images/ex2.jpg" alt="Input Face" width="30%" />
   <img src="./images/ex3.png" alt="Final Result" width="30%" />
 </p>
 
