@@ -13,7 +13,7 @@ It combines tiny-sd (text-to-image) with InsightFace FaceSwap in a simple, unifi
 </p>
 
 <p align="center">
-  <em>Left → SDXL Generated Image, Middle → Input Face, Right → Final FaceSwap Result</em>
+  <em>Generated Image, Input Face, Final FaceSwap Result</em>
 </p>
 
 ### 🚀 Features
