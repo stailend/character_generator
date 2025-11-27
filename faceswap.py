@@ -1,21 +1,26 @@
+# faceswap.py
+
 import cv2
-import numpy as np
-import insightface
+import requests
+import urllib3
 from insightface.app import FaceAnalysis
 from insightface.model_zoo import get_model
 from huggingface_hub import hf_hub_download
-import urllib.request
-import requests
+
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 app = None
 swapper = None
+
 
 def setup_faceswap():
     global app, swapper
 
     if app is None:
         app = FaceAnalysis(name="buffalo_l")
-        app.prepare(ctx_id=-1)  
-        
+        app.prepare(ctx_id=-1)  # CPU only
+
     if swapper is None:
         model_path = hf_hub_download(
             repo_id="ezioruan/inswapper_128.onnx",
@@ -27,35 +32,41 @@ def setup_faceswap():
             providers=["CPUExecutionProvider"]
         )
 
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def download_image(url: str, save_path: str):
-    r = requests.get(url, timeout=10, verify=False) 
+    r = requests.get(url, timeout=10, verify=False)
     r.raise_for_status()
     with open(save_path, "wb") as f:
         f.write(r.content)
     return save_path
 
-def faceswap(base_image_path: str, face_url: str) -> str:
+
+def _faceswap_internal(base_path: str, face_path: str) -> str:
     setup_faceswap()
 
-    face_path = "input_face.jpg"
-    download_image(face_url, face_path)
-
-    base_img = cv2.imread(base_image_path)
+    base_img = cv2.imread(base_path)
     source_img = cv2.imread(face_path)
 
     base_faces = app.get(base_img)
     source_faces = app.get(source_img)
 
     if len(base_faces) == 0:
-        raise RuntimeError("No face detected in generated image")
+        raise RuntimeError("No face detected in base image")
     if len(source_faces) == 0:
-        raise RuntimeError("No face detected in input face image")
+        raise RuntimeError("No face detected in face image")
 
-    swapped = swapper.get(base_img, base_faces[0], source_faces[0])
+    result = swapper.get(base_img, base_faces[0], source_faces[0])
 
-    out_path = "output_faceswap.png"
-    cv2.imwrite(out_path, swapped)
+    out_path = "final_image.png"
+    cv2.imwrite(out_path, result)
     return out_path
+
+
+def faceswap_from_url(base_path: str, face_url: str) -> str:
+    face_path = "input_face.jpg"
+    download_image(face_url, face_path)
+    return _faceswap_internal(base_path, face_path)
+
+
+def faceswap_from_local(base_path: str, face_path: str) -> str:
+    return _faceswap_internal(base_path, face_path)
