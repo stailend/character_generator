@@ -2,7 +2,9 @@
 ## Text Prompt + Face → Final Character Image 
 
 This project generates a custom character image using a text description and swaps the face with a user-provided one (via URL or local file).
-It combines tiny-sd (text-to-image) with InsightFace FaceSwap in a simple, unified pipeline.
+It combines tiny-sd (text-to-image) with InsightFace FaceSwap in a simple, unified pipeline. 
+
+The txt2img model is ~1Gb.
 
 ### 📸 Example Pipeline Output
 
